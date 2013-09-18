@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Author: {{ author.name }}</h2>
+    <img style="height:200px" alt='Picture of {{ author.name }}' src='/media/{{ author.headshot }}'/>
+    <p style="font-style:italic">{{ author.salutation }}</p>
+    E-mail: {{ author.email }}
+    <p><a href="{% url 'author_list' %}">Back</a></p>
+{% endblock %}

@@ -20,7 +20,8 @@
                     City: {{ publisher.city }} <br/>
                     State/Province: {{ publisher.state_province }} <br/>
                     Country: {{ publisher.country }} <br/>
-                    Website: <a href="{{ publisher.website }}">{{ publisher.website }}</a>
+                    Website: <a href="{{ publisher.website }}">{{ publisher.website }}</a><br/>
+                    List of books: <a href="{% url 'books_by_publisher' publisher.name %}">Here</a>
                 </div>
             </td>
         </tr>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Books</h2>
+    <table>
+        <thead style="font-weight:bold">
+            <td>Title</td>
+            <td>Author</td>
+            <td>Publisher</td>
+            <td>Date Published</td>
+        </thead>
+        {% for book in books %}
+        <tr style="background-color:{% cycle '#b0c4de' '#ffffff' %}">
+            <td>{{ book.title }}</td>
+            <td>{{ book.authors.all|join:", " }}</td>
+            <td>
+                <a href="{% url 'publisher_detail' book.publisher.id %}">
+                    {{ book.publisher }}
+                </a>
+            </td>
+            <td>{{ book.publication_date|date:"d F Y" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

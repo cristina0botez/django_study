@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Books Published By {{ publisher }}</h2>
+    <table>
+        <thead style="font-weight:bold">
+            <td style="background-color:#b0c4de">Date Published</td>
+            <td>Title</td>
+            <td style="background-color:#b0c4de">Author</td>
+        </thead>
+        {% for book in books %}
+        <tr>
+            <td style="background-color:#b0c4de">{{ book.publication_date|date:"d F Y" }}</td>
+            <td>{{ book.title }}</td>
+            <td style="background-color:#b0c4de">{{ book.authors.all|join:"<br/> " }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" style="font-style:italic">Sorry, there are no books for this publisher.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p><a href="{% url 'book_list' %}">All Books</a></p>
+{% endblock %}

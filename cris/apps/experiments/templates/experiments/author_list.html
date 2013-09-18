@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Authors</h2>
+    <ul>
+        {% for author in object_list %}
+            <li>
+                <a href="{% url 'author_detail' author.id %}">{{ author.name }}</a>
+                <span style="font-style:italic">
+                    - Last Accessed: {% firstof author.last_accessed|date:"Y.m.d H:i:s" 'n/a' %}
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
