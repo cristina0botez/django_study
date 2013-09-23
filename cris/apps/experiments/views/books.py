@@ -1,11 +1,20 @@
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from experiments.forms import AuthorForm
 from experiments.models import Publisher, Book, Author
 
 
-__all__ = ['PublisherList', 'PublisherDetail', 'BookList', 'PublisherBookList',
-           'AuthorDetail', 'AuthorList']
+__all__ = [
+    'AuthorList', 'AuthorDetail', 'AuthorCreate', 'AuthorUpdate',
+    'AuthorDelete',
+    'PublisherList', 'PublisherDetail',
+    'BookList', 'PublisherBookList'
+]
 
 
 class AuthorList(ListView):
@@ -22,6 +31,32 @@ class AuthorDetail(DetailView):
         author.last_accessed = timezone.now()
         author.save()
         return author
+
+
+class AuthorCreate(CreateView):
+    form_class = AuthorForm
+    model = Author
+    context_object_name = 'author'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AuthorCreate, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        
+        form.instance.created_by = self.request.user
+        return super(AuthorCreate, self).form_valid(form)
+
+
+class AuthorUpdate(UpdateView):
+    model = Author
+    context_object_name = 'author'
+
+
+class AuthorDelete(DeleteView):
+    model = Author
+    context_object_name = 'author'
+    success_url = reverse_lazy('author_list')
 
 
 class BookList(ListView):

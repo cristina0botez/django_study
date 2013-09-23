@@ -2,6 +2,7 @@
 
 {% block content %}
     <h2>Authors</h2>
+    <p><a href="{% url 'author_create' %}">Create One</a></p>
     <ul>
         {% for author in object_list %}
             <li>

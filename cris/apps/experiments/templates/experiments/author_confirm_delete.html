@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Delete Author Confirmation</h2>
+    <form action="{% url 'author_delete' pk=author.pk %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="OK"/>
+    </form>
+    <p><a href="{% url 'author_detail' author.id %}">Back to Author Details</a></p>
+{% endblock %}

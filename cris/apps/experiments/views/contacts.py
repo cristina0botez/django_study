@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse_lazy
 from django.views.generic.edit import FormView
 
 from experiments.forms import ContactForm
@@ -6,7 +7,7 @@ from experiments.forms import ContactForm
 class ContactView(FormView):
     template_name = 'experiments/contact.html'
     form_class = ContactForm
-    success_url = '/experiments/thanks/'
+    success_url = reverse_lazy('thanks')
 
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.

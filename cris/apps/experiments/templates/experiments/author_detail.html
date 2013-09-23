@@ -5,5 +5,7 @@
     <img style="height:200px" alt='Picture of {{ author.name }}' src='/media/{{ author.headshot }}'/>
     <p style="font-style:italic">{{ author.salutation }}</p>
     E-mail: {{ author.email }}
+    <a href="{% url 'author_update' pk=author.pk %}">Update</a>
+    <a href="{% url 'author_delete' pk=author.pk %}">Delete</a>
     <p><a href="{% url 'author_list' %}">Back</a></p>
 {% endblock %}

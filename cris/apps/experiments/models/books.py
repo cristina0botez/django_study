@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.core.urlresolvers import reverse
 from django.db import models
 
 
@@ -25,14 +27,19 @@ class Author(models.Model):
     salutation = models.CharField(max_length=10)
     name = models.CharField(max_length=200)
     email = models.EmailField()
-    headshot = models.ImageField(upload_to='author_headshots')
-    last_accessed = models.DateTimeField(null=True)
+    headshot = models.ImageField(upload_to='author_headshots',
+                                 null=True, blank=True)
+    last_accessed = models.DateTimeField(null=True, blank=True)
+    created_by = models.ForeignKey(get_user_model(), null=True, blank=True)
 
     class Meta:
         app_label = 'experiments'
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('author_detail', kwargs={'author_id': self.pk})
 
 
 class Book(models.Model):
