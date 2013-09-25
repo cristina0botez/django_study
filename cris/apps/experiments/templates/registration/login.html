@@ -2,7 +2,8 @@
 
 {% block content %}
     <h2>User Login</h2>
-    <form action="{% url 'django.contrib.auth.views.login' %}" method="POST">
+    <form action="{% url 'django.contrib.auth.views.login' %}?next={{ next }}"
+          method="POST">
         {% csrf_token %}
         {{ form.as_ul }}
         <input type="submit" value="Login"/>

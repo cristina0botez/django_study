@@ -59,6 +59,7 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_URL = '/accounts/login/'
+LOGOUT_URL = '/accounts/logout/'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
