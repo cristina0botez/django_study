@@ -43,11 +43,14 @@ class AuthorCreate(CreateView):
         return super(AuthorCreate, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
+        import pdb
+        pdb.set_trace()
         form.instance.created_by = self.request.user
         return super(AuthorCreate, self).form_valid(form)
 
 
 class AuthorUpdate(UpdateView):
+    form_class = AuthorForm
     model = Author
     context_object_name = 'author'
 
@@ -60,6 +63,10 @@ class AuthorDelete(DeleteView):
     model = Author
     context_object_name = 'author'
     success_url = reverse_lazy('author_list')
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AuthorDelete, self).dispatch(*args, **kwargs)
 
 
 class BookList(ListView):

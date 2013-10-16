@@ -2,11 +2,13 @@
 
 {% block content %}
     <h2>Author Create/Update Form</h2>
-    {% if author.pk %}
-    <form action="{% url 'author_update' pk=author.pk %}" method="POST">
-    {% else %}
-    <form action="{% url 'author_create' %}" method="POST">
-    {% endif %}
+    <form
+        {% if author.pk %}
+        action="{% url 'author_update' pk=author.pk %}"
+        {% else %}
+        action="{% url 'author_create' %}"
+        {% endif %}
+        method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Save"/>
