@@ -4,7 +4,8 @@
     <h2>Author: {{ author.name }}</h2>
     <img style="height:200px" alt='Picture of {{ author.name }}' src='/media/{{ author.headshot }}'/>
     <p style="font-style:italic">{{ author.salutation }}</p>
-    E-mail: {{ author.email }}
+    E-mail: {{ author.email }}<br/>
+    Number of times accessed by you: {{ user_access_count }}<br/>
     <a href="{% url 'author_update' pk=author.pk %}">Update</a>
     <a href="{% url 'author_delete' pk=author.pk %}">Delete</a>
     <p><a href="{% url 'author_list' %}">Back</a></p>

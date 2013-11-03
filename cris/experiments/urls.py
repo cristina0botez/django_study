@@ -5,6 +5,7 @@ from .views import (
     AuthorList, AuthorDetail, AuthorCreate, AuthorUpdate, AuthorDelete,
     PublisherList, PublisherDetail,
     BookList, PublisherBookList,
+    RecordInterest,
     ContactView,
     processors_example, processors_example_with_render_2_response
 )
@@ -31,6 +32,8 @@ urlpatterns = patterns(
         name='author_update'),
     url(r'^authors/(?P<pk>\d+)/delete/$', AuthorDelete.as_view(),
         name='author_delete'),
+    url(r'^authors/(?P<pk>\d+)/record_interest/$', RecordInterest.as_view(),
+        name='record_user_interest_in_author'),
 
     # contacts (address book examples)
     url(r'^contact/$', ContactView.as_view(), name='contact'),

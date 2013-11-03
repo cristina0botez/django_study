@@ -1,19 +1,22 @@
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, View
+from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from experiments.forms import AuthorForm
-from experiments.models import Publisher, Book, Author
+from experiments.models import Publisher, Book, Author, UserAuthorInterest
 
 
 __all__ = [
     'AuthorList', 'AuthorDetail', 'AuthorCreate', 'AuthorUpdate',
     'AuthorDelete',
     'PublisherList', 'PublisherDetail',
-    'BookList', 'PublisherBookList'
+    'BookList', 'PublisherBookList',
+    'RecordInterest'
 ]
 
 
@@ -26,11 +29,25 @@ class AuthorDetail(DetailView):
     context_object_name = 'author'
     pk_url_kwarg  = 'author_id'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AuthorDetail, self).dispatch(*args, **kwargs)
+
     def get_object(self):
         author = super(AuthorDetail, self).get_object()
         author.last_accessed = timezone.now()
         author.save()
         return author
+
+    def get_context_data(self, **kwargs):
+        context = super(AuthorDetail, self).get_context_data(**kwargs)
+        context['user_access_count'] = (
+            UserAuthorInterest.get_interest_of_user_in_author(
+                self.request.user,
+                context['author']
+            )
+        )
+        return context
 
 
 class AuthorCreate(CreateView):
@@ -43,8 +60,6 @@ class AuthorCreate(CreateView):
         return super(AuthorCreate, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
-        import pdb
-        pdb.set_trace()
         form.instance.created_by = self.request.user
         return super(AuthorCreate, self).form_valid(form)
 
@@ -102,3 +117,22 @@ class PublisherDetail(DetailView):
         context = super(PublisherDetail, self).get_context_data(**kwargs)
         context['book_list'] = Book.objects.all()
         return context
+
+
+class RecordInterest(View, SingleObjectMixin):
+    """Records the current user's interest in an author."""
+    model = Author
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(RecordInterest, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden()
+        self.object = self.get_object()
+        UserAuthorInterest.increment_interest_of_user_in_author(
+            self.request.user, self.object
+        )
+        return HttpResponseRedirect(reverse('author_detail',
+                                    kwargs={'author_id': self.object.pk}))

@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 
-__all__ = ['Publisher', 'Author', 'Book']
+__all__ = ['Publisher', 'Author', 'Book', 'UserAuthorInterest']
 
 
 class Publisher(models.Model):
@@ -50,3 +50,33 @@ class Book(models.Model):
 
     class Meta:
         app_label = 'experiments'
+
+
+class UserAuthorInterest(models.Model):
+    user = models.ForeignKey(get_user_model())
+    author = models.ForeignKey(Author)
+    accessed = models.IntegerField(default=0)
+
+    class Meta:
+        app_label = 'experiments'
+        unique_together = ('user', 'author')
+
+    @classmethod
+    def get_interest_of_user_in_author(cls, user, author):
+        try:
+            uai = cls.objects.get(user=user, author=author)
+        except cls.DoesNotExist:
+            return None
+        else:
+            return uai.accessed
+
+    @classmethod
+    def increment_interest_of_user_in_author(cls, user, author):
+        try:
+            uai = cls.objects.get(user=user, author=author)
+        except cls.DoesNotExist:
+            uai = cls.objects.create(user=user, author=author, accessed=1)
+        else:
+            uai.accessed += 1
+            uai.save()
+        return uai.accessed
