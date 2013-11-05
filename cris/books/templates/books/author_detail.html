@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}<title>Author - {{ author.name }}</title>{% endblock %}
+
 {% block content %}
     <h2>Author: {{ author.name }}</h2>
     <img style="height:200px" alt='Picture of {{ author.name }}' src='/media/{{ author.headshot }}'/>

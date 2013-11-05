@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% block title %}
+<title>
+    {% if author.pk %}
+    Edit Author - {{ author.name }}
+    {% else %}
+    Create an Author
+    {% endif %}
+</title>
+{% endblock %}
+
 {% block content %}
     <h2>Author Create/Update Form</h2>
     <form

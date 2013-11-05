@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}<title>Books App Login</title>{% endblock %}
+
 {% block content %}
     <h2>User Login</h2>
     <form action="{% url 'django.contrib.auth.views.login' %}?next={{ next }}"

@@ -1,10 +1,4 @@
 # Django settings for cris project.
-import os
-import sys
-
-PROJECT_ROOT = 'D:\Workspace\PythonStudy\Django\cris'
-sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -19,7 +13,7 @@ DATABASES = {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'ENGINE': 'django.db.backends.sqlite3',
         # Or path to database file if using sqlite3.
-        'NAME': os.path.join(PROJECT_ROOT, 'data\cris_project.db'),
+        'NAME': 'D:/Workspace/PythonStudy/Django/cris/data/cris_project.db',
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -63,7 +57,7 @@ LOGOUT_URL = '/accounts/logout/'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'data')
+MEDIA_ROOT = 'D:/Workspace/PythonStudy/Django/cris/data'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -85,7 +79,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT, 'static'),
+    'D:/Workspace/PythonStudy/Django/cris/static',
 )
 
 # List of finder classes that know how to find static files in
@@ -126,10 +120,10 @@ TEMPLATE_DIRS = (
     # "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT, 'templates'),
+    'D:/Workspace/PythonStudy/Django/cris/templates',
 )
 
-TEST_PEP8_DIRS = [os.path.dirname(PROJECT_ROOT), ]
+TEST_PEP8_DIRS = ['D:/Workspace/PythonStudy/Django/cris', ]
 TEST_PEP8_EXCLUDE = ['migrations', ]
 
 INSTALLED_APPS = (
@@ -147,6 +141,7 @@ INSTALLED_APPS = (
     'test_pep8',
     # My apps
     'polls',
+    'books',
     'experiments'
 )
 
@@ -174,7 +169,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'console',
-            'filename': 'D:\Workspace\log\cris\\application.log',
+            'filename': 'D:/Workspace/log/cris/application.log',
             'maxBytes': 5242880,  # 5 Mb
             'backupCount': 10
         },

@@ -16,7 +16,6 @@ class Publisher(models.Model):
 
     class Meta:
         ordering = ["-name"]
-        app_label = 'experiments'
 
 
     def __unicode__(self):
@@ -32,9 +31,6 @@ class Author(models.Model):
     last_accessed = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(get_user_model(), null=True, blank=True)
 
-    class Meta:
-        app_label = 'experiments'
-
     def __unicode__(self):
         return self.name
 
@@ -48,9 +44,6 @@ class Book(models.Model):
     publisher = models.ForeignKey(Publisher)
     publication_date = models.DateField()
 
-    class Meta:
-        app_label = 'experiments'
-
 
 class UserAuthorInterest(models.Model):
     user = models.ForeignKey(get_user_model())
@@ -58,7 +51,6 @@ class UserAuthorInterest(models.Model):
     accessed = models.IntegerField(default=0)
 
     class Meta:
-        app_label = 'experiments'
         unique_together = ('user', 'author')
 
     @classmethod
