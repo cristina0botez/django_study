@@ -154,7 +154,7 @@ class RecordInterest(View, SingleObjectMixin):
     def dispatch(self, *args, **kwargs):
         return super(RecordInterest, self).dispatch(*args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
             return HttpResponseForbidden()
         self.object = self.get_object()
