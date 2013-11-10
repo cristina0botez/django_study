@@ -14,7 +14,7 @@ from .models import Publisher, Book, Author, UserAuthorInterest
 __all__ = [
     'AuthorList', 'AuthorDetail', 'AuthorCreate', 'AuthorUpdate',
     'AuthorDelete',
-    'PublisherList', 'PublisherDetail',
+    'PublisherList', 'PublisherDetail', 'PublisherDetailsWithBookList',
     'BookList', 'PublisherBookList',
     'RecordInterest'
 ]
@@ -117,6 +117,33 @@ class PublisherDetail(DetailView):
         context = super(PublisherDetail, self).get_context_data(**kwargs)
         context['book_list'] = Book.objects.all()
         return context
+
+
+class PublisherDetailsWithBookList(SingleObjectMixin, ListView):
+    model = Publisher  # For SingleObjectMixin.get_object.
+    paginate_by = 2
+    # If not set, it will be set automatically to books/book_list.html because
+    # of ListView.
+    template_name = 'books/publisher_detail_with_books.html'
+
+    def get(self, request, *args, **kwargs):
+        publisher_queryset = self.model.objects.all()
+        # The queryset must be provided as a parameter, otherwise the
+        # get_queryset() method will be invoked.
+        self.object = self.get_object(queryset=publisher_queryset)
+        return super(PublisherDetailsWithBookList, self).get(request, *args,
+                                                             **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(PublisherDetailsWithBookList,
+                        self).get_context_data(**kwargs)
+        context['publisher'] = self.object
+        pages_before = context['page_obj'].number - 1
+        context['book_list_start_index'] = pages_before * self.paginate_by + 1
+        return context
+
+    def get_queryset(self):
+        return self.object.book_set.all()
 
 
 class RecordInterest(View, SingleObjectMixin):

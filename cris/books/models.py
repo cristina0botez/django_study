@@ -44,6 +44,9 @@ class Book(models.Model):
     publisher = models.ForeignKey(Publisher)
     publication_date = models.DateField()
 
+    def __unicode__(self):
+        return self.title
+
 
 class UserAuthorInterest(models.Model):
     user = models.ForeignKey(get_user_model())
