@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 
 from .views import (
     AuthorList, AuthorDetail, AuthorCreate, AuthorUpdate, AuthorDelete,
+    AuthorDetailWithInterest,
     PublisherList, PublisherDetail, PublisherDetailsWithBookList,
     BookList, PublisherBookList,
     RecordInterest
@@ -25,6 +26,9 @@ urlpatterns = patterns(
     url(r'^authors/$', AuthorList.as_view(), name='author_list'),
     url(r'^authors/(?P<author_id>\d+)/$', AuthorDetail.as_view(),
         name='author_detail'),
+    url(r'^authors/(?P<author_id>\d+)/with_interest$',
+        AuthorDetailWithInterest.as_view(),
+        name='author_detail_with_interest'),
     url(r'^authors/add/$', AuthorCreate.as_view(), name='author_create'),
     url(r'^authors/(?P<pk>\d+)/update/$', AuthorUpdate.as_view(),
         name='author_update'),

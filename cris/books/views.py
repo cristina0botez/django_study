@@ -5,15 +5,17 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, View
 from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import (
+    CreateView, UpdateView, DeleteView, FormView
+)
 
-from .forms import AuthorForm
+from .forms import AuthorForm, AuthorInterestForm
 from .models import Publisher, Book, Author, UserAuthorInterest
 
 
 __all__ = [
     'AuthorList', 'AuthorDetail', 'AuthorCreate', 'AuthorUpdate',
-    'AuthorDelete',
+    'AuthorDelete', 'AuthorDetailWithInterest',
     'PublisherList', 'PublisherDetail', 'PublisherDetailsWithBookList',
     'BookList', 'PublisherBookList',
     'RecordInterest'
@@ -41,13 +43,70 @@ class AuthorDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(AuthorDetail, self).get_context_data(**kwargs)
-        context['user_access_count'] = (
+        interest_points, message = (
             UserAuthorInterest.get_interest_of_user_in_author(
                 self.request.user,
                 context['author']
             )
         )
+        context['user_access_count'] = interest_points
+        context['user_to_author_message'] = message
         return context
+
+
+class AuthorDisplay(DetailView):
+    template_name = 'books/author_detail_with_interest.html'
+    model = Author
+    context_object_name = 'author'
+    pk_url_kwarg  = 'author_id'
+
+    def get_context_data(self, **kwargs):
+        context = super(AuthorDisplay, self).get_context_data(**kwargs)
+        context['interest_form'] = AuthorInterestForm()
+        interest_points, message = (
+            UserAuthorInterest.get_interest_of_user_in_author(
+                self.request.user,
+                context['author']
+            )
+        )
+        context['user_access_count'] = interest_points or 0
+        context['user_to_author_message'] = message or '--'
+        return context
+
+
+class AuthorInterest(FormView, SingleObjectMixin):
+    template_name = 'books/author_detail_with_interest.html'
+    form_class = AuthorInterestForm
+    model = Author
+    context_object_name = 'author'
+    pk_url_kwarg  = 'author_id'
+
+    def form_valid(self, form):
+        print 'Got here'
+        self.object = self.get_object()
+        UserAuthorInterest.increment_interest_of_user_in_author(
+            self.request.user, self.object, form.cleaned_data['message']
+        )
+        return super(AuthorInterest, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('author_detail_with_interest',
+                       kwargs={'author_id': self.object.pk})
+
+
+class AuthorDetailWithInterest(View):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AuthorDetailWithInterest, self).dispatch(*args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        view = AuthorDisplay.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        view = AuthorInterest.as_view()
+        return view(request, *args, **kwargs)
 
 
 class AuthorCreate(CreateView):

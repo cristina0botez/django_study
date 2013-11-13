@@ -50,8 +50,9 @@ class Book(models.Model):
 
 class UserAuthorInterest(models.Model):
     user = models.ForeignKey(get_user_model())
-    author = models.ForeignKey(Author)
+    author = models.ForeignKey(Author, related_name='popularity')
     accessed = models.IntegerField(default=0)
+    message = models.TextField(null=True)
 
     class Meta:
         unique_together = ('user', 'author')
@@ -61,17 +62,15 @@ class UserAuthorInterest(models.Model):
         try:
             uai = cls.objects.get(user=user, author=author)
         except cls.DoesNotExist:
-            return None
+            return None, None
         else:
-            return uai.accessed
+            return uai.accessed, uai.message
 
     @classmethod
-    def increment_interest_of_user_in_author(cls, user, author):
-        try:
-            uai = cls.objects.get(user=user, author=author)
-        except cls.DoesNotExist:
-            uai = cls.objects.create(user=user, author=author, accessed=1)
-        else:
-            uai.accessed += 1
-            uai.save()
+    def increment_interest_of_user_in_author(cls, user, author, message=None):
+        uai, _ = cls.objects.get_or_create(user=user, author=author)
+        if message is not None:
+            uai.message = message
+        uai.accessed += 1
+        uai.save()
         return uai.accessed

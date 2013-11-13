@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Author - {{ author.name }}</title>{% endblock %}
+
+{% block content %}
+    <h2>Author: {{ author.name }}</h2>
+    <img style="height:200px" alt='Picture of {{ author.name }}' src='/media/{{ author.headshot }}'/>
+    <p style="font-style:italic">{{ author.salutation }}</p>
+    E-mail: {{ author.email }}<br/>
+    Number of interest points from you: {{ user_access_count }}<br/>
+    Latest message from you: <span style="font-style:italic">'{{ user_to_author_message }}'</span><br/>
+    <form action="{% url 'author_detail_with_interest' author.id %}" method="POST">
+        {% csrf_token %}
+        {{ interest_form.as_p }}
+        <input type="submit" value="Got my attention!" />
+    </form>
+    <a href="{% url 'author_update' pk=author.pk %}">Update</a>
+    <a href="{% url 'author_delete' pk=author.pk %}">Delete</a>
+    <p><a href="{% url 'author_list' %}">Back</a></p>
+{% endblock %}
