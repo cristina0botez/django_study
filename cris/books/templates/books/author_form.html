@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>
+    {% if author.pk %}
+    Edit Author - {{ author.name }}
+    {% else %}
+    Create an Author
+    {% endif %}
+</title>
+{% endblock %}
+
+{% block content %}
+    <h2>Author Create/Update Form</h2>
+    <form
+        {% if author.pk %}
+        action="{% url 'author_update' pk=author.pk %}"
+        {% else %}
+        action="{% url 'author_create' %}"
+        {% endif %}
+        method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save"/>
+    </form>
+    <p><a href="{% url 'author_list' %}">Back</a></p>
+{% endblock %}

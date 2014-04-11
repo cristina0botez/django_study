@@ -8,15 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Author.created_by'
-        db.add_column(u'experiments_author', 'created_by',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, blank=True),
+        # Adding field 'UserAuthorInterest.message'
+        db.add_column(u'books_userauthorinterest', 'message',
+                      self.gf('django.db.models.fields.TextField')(null=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'Author.created_by'
-        db.delete_column(u'experiments_author', 'created_by_id')
+        # Deleting field 'UserAuthorInterest.message'
+        db.delete_column(u'books_userauthorinterest', 'message')
 
 
     models = {
@@ -49,14 +49,7 @@ class Migration(SchemaMigration):
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
-        u'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'experiments.author': {
+        u'books.author': {
             'Meta': {'object_name': 'Author'},
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True', 'blank': 'True'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
@@ -66,15 +59,15 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'salutation': ('django.db.models.fields.CharField', [], {'max_length': '10'})
         },
-        'experiments.book': {
+        u'books.book': {
             'Meta': {'object_name': 'Book'},
-            'authors': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['experiments.Author']", 'symmetrical': 'False'}),
+            'authors': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['books.Author']", 'symmetrical': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'publication_date': ('django.db.models.fields.DateField', [], {}),
-            'publisher': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['experiments.Publisher']"}),
+            'publisher': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['books.Publisher']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'experiments.publisher': {
+        u'books.publisher': {
             'Meta': {'ordering': "['-name']", 'object_name': 'Publisher'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'city': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
@@ -83,7 +76,22 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'state_province': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200'})
+        },
+        u'books.userauthorinterest': {
+            'Meta': {'unique_together': "(('user', 'author'),)", 'object_name': 'UserAuthorInterest'},
+            'accessed': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'author': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['books.Author']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'message': ('django.db.models.fields.TextField', [], {'null': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'contenttypes.contenttype': {
+            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
+            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         }
     }
 
-    complete_apps = ['experiments']
+    complete_apps = ['books']

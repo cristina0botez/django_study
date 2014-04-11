@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Publisher {{ publisher.name }}</h2>
+
+    <div style="margin-left:50px">
+        Address: {{ publisher.address }} <br/>
+        City: {{ publisher.city }} <br/>
+        State/Province: {{ publisher.state_province }} <br/>
+        Country: {{ publisher.country }} <br/>
+        Website: <a href="{{ publisher.website }}">{{ publisher.website }}</a><br/>
+    </div>
+
+    <h4>List of books</h4>
+    <div style="margin-left:20px; border-left:1px dotted black; width:200px">
+        <ol start="{{ book_list_start_index }}">
+            {% for book in page_obj %}
+            <li>{{ book.title }}</li>
+            {% empty %}
+            <p style="font-style:italic">Has not published books yet.</p>
+            {% endfor %}
+        </ol>
+        <div class="pagination" style="text-align:center">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">&lt;&lt;</a>
+                {% endif %}
+
+                <span class="current">
+                    {{ page_obj.number }}/{{ paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">&gt;&gt;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+{% endblock %}

@@ -1,7 +1,9 @@
 Current study:
-https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-editing/#models-and-request-user
-    - see how to make the login work
-    - ImageField not validated correctly
-    - Hide some fields
-https://docs.djangoproject.com/en/1.5/topics/class-based-views/mixins/#using-formmixin-with-detailview
-https://docs.djangoproject.com/en/1.5/ref/class-based-views/mixins-editing/#django.views.generic.edit.ProcessFormView
+http://effectivedjango.com/tutorial/views.html#testing-your-views
+
+
+https://docs.djangoproject.com/en/1.5/topics/class-based-views/generic-editing/#ajax-example
+    - try this with ModelAdmins
+
+
+Class-based views mixins: https://docs.djangoproject.com/en/1.5/ref/class-based-views/mixins/

@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 
-__all__ = ['Publisher', 'Author', 'Book']
+__all__ = ['Publisher', 'Author', 'Book', 'UserAuthorInterest']
 
 
 class Publisher(models.Model):
@@ -16,7 +16,6 @@ class Publisher(models.Model):
 
     class Meta:
         ordering = ["-name"]
-        app_label = 'experiments'
 
 
     def __unicode__(self):
@@ -32,9 +31,6 @@ class Author(models.Model):
     last_accessed = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(get_user_model(), null=True, blank=True)
 
-    class Meta:
-        app_label = 'experiments'
-
     def __unicode__(self):
         return self.name
 
@@ -48,5 +44,33 @@ class Book(models.Model):
     publisher = models.ForeignKey(Publisher)
     publication_date = models.DateField()
 
+    def __unicode__(self):
+        return self.title
+
+
+class UserAuthorInterest(models.Model):
+    user = models.ForeignKey(get_user_model())
+    author = models.ForeignKey(Author, related_name='popularity')
+    accessed = models.IntegerField(default=0)
+    message = models.TextField(null=True)
+
     class Meta:
-        app_label = 'experiments'
+        unique_together = ('user', 'author')
+
+    @classmethod
+    def get_interest_of_user_in_author(cls, user, author):
+        try:
+            uai = cls.objects.get(user=user, author=author)
+        except cls.DoesNotExist:
+            return None, None
+        else:
+            return uai.accessed, uai.message
+
+    @classmethod
+    def increment_interest_of_user_in_author(cls, user, author, message=None):
+        uai, _ = cls.objects.get_or_create(user=user, author=author)
+        if message is not None:
+            uai.message = message
+        uai.accessed += 1
+        uai.save()
+        return uai.accessed

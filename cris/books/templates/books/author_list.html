@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 
+{% block title %}<title>Authors</title>{% endblock %}
+
 {% block content %}
     <h2>Authors</h2>
     <p><a href="{% url 'author_create' %}">Create One</a></p>
     <ul>
         {% for author in object_list %}
             <li>
-                <a href="{% url 'author_detail' author.id %}">{{ author.name }}</a>
+                <a href="{% url 'author_detail_with_interest' author.id %}">{{ author.name }}</a>
                 <span style="font-style:italic">
                     - Last Accessed: {% firstof author.last_accessed|date:"Y.m.d H:i:s" 'n/a' %}
                 </span>
             </li>
+        {% empty %}
+        </ul>
+        <p colspan="4" style="font-style:italic">Sorry, there are no authors yet!</p>
+        <ul>
         {% endfor %}
     </ul>
 {% endblock %}
