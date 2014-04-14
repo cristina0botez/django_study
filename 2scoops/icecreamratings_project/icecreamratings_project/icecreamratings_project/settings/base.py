@@ -195,6 +195,7 @@ DJANGO_APPS = (
 # Apps specific for this project go here.
 LOCAL_APPS = (
     'db_models_bp',
+    'multi_table_inheritance'
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
