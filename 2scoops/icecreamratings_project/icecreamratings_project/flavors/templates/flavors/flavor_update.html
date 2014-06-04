@@ -1,0 +1,16 @@
+
+<html>
+    <head>
+        <title>Update the {{ object.name }} Flavor</title>
+    </head>
+    <body>
+        <h1>Flavor: {{ object.name }}</h1>
+        <form action="{% url 'flavor_update' object.pk %}"
+              method="POST"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Save" />
+        </form>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>Flavors List</title>
+</head>
+<body>
+    <h1>Flavors</h1>
+    {% include "flavors/_flavor_search.html" %}
+    <ul>
+    {% for flavor in object_list %}
+        <li><a href="{% url 'flavor_details' flavor.pk %}">{{ flavor.name }}</a></li>
+    {% empty %}
+    </ul>
+    <p>No flavors yet...</p>
+    <ul>
+    {% endfor %}
+    </ul>
+</body>
+</html>
