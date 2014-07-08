@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>Ice-cream Stores List</title>
+</head>
+<body>
+    <h1>Ice-cream Stores</h1>
+    <ul>
+    {% for store in object_list %}
+    <li><a href="{% url 'icstore_details' store.pk %}">{{ store.title }}</a></li>
+    {% empty %}
+    </ul>
+    <p>No ice-cream stores yet...</p>
+    <ul>
+    {% endfor %}
+    </ul>
+</body>
+</html>

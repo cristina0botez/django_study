@@ -12,7 +12,9 @@ class Migration(SchemaMigration):
         db.create_table(u'flavors_flavor', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=100)),
             ('description', self.gf('django.db.models.fields.TextField')()),
+            ('scoops_remaining', self.gf('django.db.models.fields.BigIntegerField')(default=0)),
         ))
         db.send_create_signal(u'flavors', ['Flavor'])
 
@@ -27,7 +29,9 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Flavor'},
             'description': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'scoops_remaining': ('django.db.models.fields.BigIntegerField', [], {'default': '0'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '100'})
         }
     }
 

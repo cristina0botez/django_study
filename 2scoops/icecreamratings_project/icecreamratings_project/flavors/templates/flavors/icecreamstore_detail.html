@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>Store {{ object.title }}</title>
+    </head>
+    <body>
+        <h1>{{ object.title }}</h1>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li id="message_{{ forloop.counter }}"
+                    {% if message.tags %} class="{{ message.tags }}" {% endif %} >
+                    {{ message }}
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <p>{{ object.block_address }}</p>
+        <p>{{ object.phone }}</p>
+        <p>{{ object.description }}</p>
+    </body>
+</html>

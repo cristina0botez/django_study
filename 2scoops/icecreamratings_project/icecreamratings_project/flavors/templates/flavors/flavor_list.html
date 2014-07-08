@@ -7,7 +7,7 @@
     {% include "flavors/_flavor_search.html" %}
     <ul>
     {% for flavor in object_list %}
-        <li><a href="{% url 'flavor_details' flavor.pk %}">{{ flavor.name }}</a></li>
+    <li><a href="{% url 'flavor_details' flavor.pk %}">{{ flavor.name }}</a> - {{ flavor.scoops_remaining }}</li>
     {% empty %}
     </ul>
     <p>No flavors yet...</p>
