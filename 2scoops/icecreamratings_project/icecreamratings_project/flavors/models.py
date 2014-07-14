@@ -14,10 +14,10 @@ class Flavor(models.Model):
 
 class IceCreamStore(models.Model):
 
-    title = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     block_address = models.TextField()
     phone = models.CharField(max_length=20, blank=True)
     description = models.TextField(blank=True)
 
     def __unicode__(self):
-        return self.title
+        return self.name

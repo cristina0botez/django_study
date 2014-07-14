@@ -4,9 +4,10 @@
 </head>
 <body>
     <h1>Ice-cream Stores</h1>
+    {% include "flavors/_search_by_name.html" %}
     <ul>
     {% for store in object_list %}
-    <li><a href="{% url 'icstore_details' store.pk %}">{{ store.title }}</a></li>
+    <li><a href="{% url 'icstore_details' store.pk %}">{{ store.name }}</a></li>
     {% empty %}
     </ul>
     <p>No ice-cream stores yet...</p>

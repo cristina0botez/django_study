@@ -48,7 +48,7 @@ class IceCreamStoreCreateForm(forms.ModelForm):
 
     class Meta:
         model = IceCreamStore
-        fields = ('title', 'block_address')
+        fields = ('name', 'block_address')
 
 
 class IceCreamStoreUpdateForm(IceCreamStoreCreateForm):
@@ -59,4 +59,4 @@ class IceCreamStoreUpdateForm(IceCreamStoreCreateForm):
         self.fields['description'].required = True
 
     class Meta(IceCreamStoreCreateForm.Meta):
-        fields = ('title', 'block_address', 'phone', 'description')
+        fields = ('name', 'block_address', 'phone', 'description')

@@ -29,6 +29,16 @@ class FlavorActionMixin(object):
         return reverse('flavor_details', kwargs={'pk': self.object.pk})
 
 
+class NameSearchMixin(object):
+
+    def get_queryset(self):
+        result = super(NameSearchMixin, self).get_queryset()
+        q = self.request.GET.get('q')
+        if q is not None and q != '':
+            result = result.filter(name__icontains=q)
+        return result
+
+
 class FlavorDetailView(LoginRequiredMixin, DetailView):
 
     model = Flavor
@@ -49,16 +59,9 @@ class FlavorUpdateView(LoginRequiredMixin, FlavorActionMixin, UpdateView):
     form_class = FlavorForm
 
 
-class FlavorListView(ListView):
+class FlavorListView(NameSearchMixin, ListView):
 
     model = Flavor
-
-    def get_queryset(self):
-        result = super(FlavorListView, self).get_queryset()
-        q = self.request.GET.get('q')
-        if q is not None:
-            result = result.filter(name__icontains=q)
-        return result
 
 
 class IceCreamOrderView(FormView):
@@ -100,6 +103,6 @@ class IceCreamStoreUpdateView(UpdateView):
         return reverse('icstore_details', kwargs={'pk': self.object.pk})
 
 
-class IceCreamStoreListView(ListView):
+class IceCreamStoreListView(NameSearchMixin, ListView):
 
     model = IceCreamStore

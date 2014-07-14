@@ -4,7 +4,7 @@
 </head>
 <body>
     <h1>Flavors</h1>
-    {% include "flavors/_flavor_search.html" %}
+    {% include "flavors/_search_by_name.html" %}
     <ul>
     {% for flavor in object_list %}
     <li><a href="{% url 'flavor_details' flavor.pk %}">{{ flavor.name }}</a> - {{ flavor.scoops_remaining }}</li>

@@ -1,8 +1,0 @@
-{% comment %}
-    Usage: {% include "flavors/_flavor_search.html" %}
-{% endcomment %}
-
-<form action="{% url 'flavor_list' %}" method="GET">
-    <input type="text" name="q" />
-    <button type="submit">Search</button>
-</form>
